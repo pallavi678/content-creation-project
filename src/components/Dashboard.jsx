@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { RxHamburgerMenu } from "react-icons/rx";
 import ListGroup from "react-bootstrap/ListGroup";
@@ -12,10 +11,17 @@ import Videos from "./ContentTypes/videos/Videos";
 import Webinars from "./ContentTypes/webinars/Webinars";
 import Contenteditor from "./ContentEditor/Contenteditor";
 import Scheduling from "./Scheduling/Scheduling";
+import { BiSolidBookContent, BiSolidVideos, BiSolidCategoryAlt } from "react-icons/bi";
+import { MdArticle } from "react-icons/md";
+import { FaChalkboardTeacher, FaLaptopCode, FaChevronDown } from "react-icons/fa";
+import { SiCkeditor4 } from "react-icons/si";
+import { RiCalendarScheduleFill } from "react-icons/ri";
+import { FcApproval } from "react-icons/fc";
+import { RxCross2 } from "react-icons/rx";
 
 function Dashboard() {
     const [subList, showSubList] = useState(false);
-    const [showSidebar, setShowSidebar] = useState(true);
+    const [showSidebar, setShowSidebar] = useState(false);
 
     const handleToggleSubList = () => {
         showSubList((prev) => !prev);
@@ -27,54 +33,71 @@ function Dashboard() {
 
     return (
         <section>
-            <Navbar className="bg-body-tertiary">
-                <Container>
+            <Navbar className="navbar">
+                <div>
                     <Navbar.Brand href="#home">
-                        <RxHamburgerMenu onClick={handleToggleSidebar} />
+                        <RxHamburgerMenu onClick={handleToggleSidebar} className="container-fluid" />
                     </Navbar.Brand>
-                </Container>
+                </div>
             </Navbar>
 
-            <div style={{ display: "flex", height: "100vh" }}>
-                {/* Sidebar */}
-                {showSidebar && (
-                    <div style={{ width: "20%", minWidth: "150px", background: "#f8f9fa", padding: "10px" }}>
-                        <ListGroup>
-                            <ListGroup.Item action onClick={handleToggleSubList}>Content Types</ListGroup.Item>
-                            {subList && (
-                                <ListGroup style={{ marginLeft: "15px" }}>
-                                    <ListGroup.Item>
-                                        <Link to="/article">Articles</Link>
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                        <Link to="/videos">Videos</Link>
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                        <Link to="/tutorial">Tutorials</Link>
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                        <Link to="/webinar">Webinars</Link>
-                                    </ListGroup.Item>
-                                </ListGroup>
-                            )}
-                            <ListGroup.Item>
-                                <Link to="/contentEditor">Content Editor</Link>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                                <Link to="/categorization">Categorization & Tagging</Link>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                                <Link to="/scheduling">Scheduling</Link>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                                <Link to="/approval">Approval Work Flow</Link>
-                            </ListGroup.Item>
-                        </ListGroup>
+            <div className="second-div">
+                <div
+                    style={{
+                        width: "25%",
+                        minWidth: "200px",
+                        background: "#f1f1f1",
+                        position: "absolute",
+                        left: showSidebar ? "0" : "-25%",
+                        top: "0",
+                        height: "100vh",
+                        transition: "left 0.4s ease-in-out",
+                        boxShadow: showSidebar ? "2px 0px 10px rgba(0, 0, 0, 0.2)" : "none",
+                        padding: "10px",
+                        marginTop: '0px',
+                        paddingTop: '20px'
+                    }}
+                >
+                    <div style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "10px" }}>
+                        <RxCross2 onClick={handleToggleSidebar} style={{ cursor: "pointer", fontSize: "20px" }} />
                     </div>
-                )}
 
-                {/* Main Content */}
-                <div style={{ width: "80%", padding: "20px", overflowX: "auto" }}>
+                    <ListGroup>
+                        <ListGroup.Item className="list-group-item" onClick={handleToggleSubList} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <span><BiSolidBookContent /> Content Types</span>
+                            <FaChevronDown style={{ transform: subList ? "rotate(180deg)" : "rotate(0deg)", transition: "0.3s" }} />
+                        </ListGroup.Item>
+                        {subList && (
+                            <ListGroup className="second-list-group">
+                                <ListGroup.Item>
+                                    <Link className="link-wrapper" to="/article"><MdArticle /> Articles</Link>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <Link className="link-wrapper" to="/videos"><BiSolidVideos /> Videos</Link>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <Link className="link-wrapper" to="/tutorial"><FaChalkboardTeacher /> Tutorials</Link>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    <Link className="link-wrapper" to="/webinar"><FaLaptopCode /> Webinars</Link>
+                                </ListGroup.Item>
+                            </ListGroup>
+                        )}
+                        <ListGroup.Item className="list-group-item">
+                            <Link className="link-wrapper" to="/contentEditor"><SiCkeditor4 /> Content Editor</Link>
+                        </ListGroup.Item>
+                        <ListGroup.Item className="list-group-item">
+                            <Link className="link-wrapper" to="/categorization"><BiSolidCategoryAlt /> Categorization & Tagging</Link>
+                        </ListGroup.Item>
+                        <ListGroup.Item className="list-group-item">
+                            <Link className="link-wrapper" to="/scheduling"><RiCalendarScheduleFill /> Scheduling</Link>
+                        </ListGroup.Item>
+                        <ListGroup.Item className="list-group-item">
+                            <Link className="link-wrapper" to="/approval"><FcApproval /> Approval Work Flow</Link>
+                        </ListGroup.Item>
+                    </ListGroup>
+                </div>
+                <div style={{ width: "100%", padding: "20px", overflowX: "auto", marginLeft: showSidebar ? "250px" : "0", transition: "margin-left 0.4s ease-in-out" }}>
                     <Routes>
                         <Route path='/approval' element={<Approval />} />
                         <Route path='/categorization' element={<Categorization />} />
